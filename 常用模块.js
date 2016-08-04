@@ -20,6 +20,21 @@ throttle= function(fn,interval){
   }
 }
 
+//分时函数(数据数组,执行分时函数,分时次数,分时时间)
+var timeTrunk=function(ary,fn,count,time){
+    var _ary,t;
+  return function(){
+    t=setInterval(function(){
+      if(ary.length==0)
+      {return clearInterval(t);}
+      for(i=0;i<Math.min(count||1,ary.length);i++)
+        { _ary=ary.shift();
+          fn(_ary);
+        }
+     },time)
+  };
+};
+
 //柯里化
 var currying=function(fn){
   var args=[];
@@ -42,6 +57,18 @@ function addEvent(o,e,fn){
 
 }
 
+// 惰性添加事件
+// var addEvent = function(o,e,fn){
+//   if(window.attachEvent){
+//       addEvent = function(o,e,fn){
+//       o.attachEvent("on"+e,fn);}
+//     }
+//     else if(window.addEventListener){
+//       addEvent = function(o,e,fn){
+//       o.addEventListener(e,fn,false);}
+//     }
+//   addEvent(o,e,fn);
+// };
 
 //解绑事件
 function removeEvent(o,e,fn){
